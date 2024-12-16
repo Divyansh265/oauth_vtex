@@ -3,11 +3,12 @@ const express = require('express');
 const axios = require('axios');
 const cookieParser = require('cookie-parser');
 const app = express();
+const VTEX_CALLBACK_URL = "https://oauth-vtex.onrender.com/oauth/callback"
 
 const port = 3000;
 app.use(cookieParser());
 app.get('/oauth', (req, res) => {
-    const authUrl = `https://account.vtex.com.br/oauth?client_id=${process.env.VTEX_CLIENT_ID}&redirect_uri=${process.env.VTEX_CALLBACK_URL}&response_type=code`;
+    const authUrl = `https://account.vtex.com.br/oauth?client_id=${process.env.VTEX_CLIENT_ID}&redirect_uri=${VTEX_CALLBACK_URL}&response_type=code`;
     console.log("check ", authUrl);
 
     console.log('Redirecting to VTEX OAuth login...');
@@ -28,7 +29,7 @@ app.get('/oauth/callback', async (req, res) => {
         client_id: process.env.VTEX_CLIENT_ID,
         client_secret: process.env.VTEX_CLIENT_SECRET,
         code: code,
-        redirect_uri: process.env.VTEX_CALLBACK_URL,
+        redirect_uri: VTEX_CALLBACK_URL,
     };
 
     try {
